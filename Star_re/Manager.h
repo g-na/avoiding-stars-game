@@ -1,28 +1,17 @@
 #pragma once
 
-class Node
-{
-private:
-public:
-	Node* m_next;
-	Node* m_prev;
-	Star* m_star;
-	Node();
-	~Node();
-};
-
 class LinkedList
 {
 private:
-	Node* m_head;
-	Node* m_tail;
+	Star* m_head;
+	Star* m_tail;
 public:
 	LinkedList();
 	~LinkedList();
-	void PushBack(int x);
+	void PushBack(int _x);
 	void Print();
-	void Delete(Node* _node);
-	Node* GetHead() { return m_head; }
+	void Delete(Star* _star);
+	Star* GetHead() { return m_head; }
 };
 
 class Manager
@@ -35,6 +24,8 @@ public:
 	~Manager();
 	void MakeStar();
 	void MoveStar();
+	void PrintStar();
 	void CheckStar();
 	bool CheckCollision(Flight* _flight);
+	void GameOver(int _score);
 };

@@ -25,6 +25,8 @@ class Star :public Foundation
 {
 private:
 public:
+	Star* m_next;
+	Star* m_prev;
 	Star();
 	~Star();
 	void Move();

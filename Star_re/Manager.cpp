@@ -3,17 +3,6 @@
 #include <stdio.h>
 #include <random>
 
-Node::Node()
-{
-	m_next = nullptr;
-	m_prev = nullptr;
-	m_star = new Star();
-}
-Node::~Node()
-{
-	delete m_star;
-}
-
 LinkedList::LinkedList()
 {
 	m_head = nullptr;
@@ -21,57 +10,55 @@ LinkedList::LinkedList()
 }
 LinkedList::~LinkedList()
 {
-	Node* node = m_head;
-	Node* nextNode = nullptr;
-	while (node)
+	Star* star = m_head;
+	Star* nextStar = nullptr;
+	while (star)
 	{
-		nextNode = node->m_next;
-		delete node;
-		node = nextNode;
+		nextStar = star->m_next;
+		delete star;
+		star = nextStar;
 	}
 }
 void LinkedList::PushBack(int _x)
 {
-	Node* node = new Node();
-	node->m_star->m_x = _x;
-	node->m_star->m_y = 0;
+	Star* star = new Star();
+	star->m_x = _x;
+	star->m_y = 0;
 
-	if (m_head == nullptr)	{ m_head = node; }
+	if (m_head == nullptr)	{ m_head = star; }
 	else
 	{
-		m_tail->m_next = node;
-		node->m_prev = m_tail;
+		m_tail->m_next = star;
+		star->m_prev = m_tail;
 	}		
-	m_tail = node;
+	m_tail = star;
 }
 void LinkedList::Print()
 {
-	Node* node = m_head;
-	while (node)
+	Star* star = m_head;
+	while (star)
 	{	
-		node->m_star->Print();
-		node = node->m_next;
+		star->Print();
+		star = star->m_next;
 	}
 }
-void LinkedList::Delete(Node* _node)
+void LinkedList::Delete(Star* _star)
 {
-	if (_node == nullptr) { return; }
+	if (_star == nullptr) { return; }
 
-	Node* prevNode = _node->m_prev;
-	Node* nextNode = _node->m_next;
-	if (_node == m_head || _node == m_tail)
-	{
-		if(_node == m_head){ m_head = nextNode; }
-		else { m_tail = prevNode; }
-	}
+	Star* prevStar = _star->m_prev;
+	Star* nextStar = _star->m_next;
+	
+	if(_star == m_head){ m_head = nextStar; }
+	else if(_star == m_tail) { m_tail = prevStar; }
 	else
 	{	
-		prevNode->m_next = nextNode;
-		nextNode->m_prev = prevNode;
+		prevStar->m_next = nextStar;
+		nextStar->m_prev = prevStar;
 	}
 	m_head->m_prev = nullptr;
 	m_tail->m_next = nullptr;
-	delete _node;
+	delete _star;
 }
 
 Manager::Manager()
@@ -93,44 +80,53 @@ void Manager::MakeStar()
 }
 void Manager::MoveStar()
 {
-	Node* node = m_list->GetHead();
-	while (node)
+	Star* star = m_list->GetHead();
+	while (star)
 	{
-		node->m_star->Move();
-		node = node->m_next;
+		star->Move();
+		star = star->m_next;
 	}
+	
+}
+void Manager::PrintStar()
+{
 	m_list->Print();
 }
 void Manager::CheckStar()
 {
-	Node* node = m_list->GetHead();
-	Node* nextNode = nullptr;
-	while (node)
+	Star* star = m_list->GetHead();
+	Star* nextStar = nullptr;
+	while (star)
 	{
-		nextNode = node->m_next;
-		if (node->m_star->m_y == 25)
+		nextStar = star->m_next;
+		if (star->m_y == 25)
 		{	
-			m_list->Delete(node);
+			m_list->Delete(star);
 			countingStar--;
 		}
-		node = nextNode;
+		star = nextStar;
 	}
 }
 bool Manager::CheckCollision(Flight* _flight)
 {
-	Node* node = m_list->GetHead();
-	while (node)
+	Star* star = m_list->GetHead();
+	while (star)
 	{
-		if (_flight->m_x == node->m_star->m_x)
+		if (_flight->m_x == star->m_x)
 		{
-			if (_flight->m_y == node->m_star->m_y)
+			if (_flight->m_y == star->m_y)
 			{
-				m_list->Delete(node);
+				m_list->Delete(star);
 				return true;
 			}
 		}
-		node = node->m_next;
+		star = star->m_next;
 	}
 	return false;
 }
-
+void Manager::GameOver(int _score)
+{
+	printf("\n=========================\n\n");
+	printf("your score is %d.", _score);
+	printf("\n\n=========================\n");
+}

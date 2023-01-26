@@ -1,7 +1,6 @@
 #include "GameObject.h"
 #include <stdio.h>
 #include <Windows.h>
-#include <conio.h>
 
 Foundation::Foundation()
 {
@@ -48,6 +47,8 @@ void Flight::Print()
 
 Star::Star()
 {
+	m_next = nullptr;
+	m_prev = nullptr;
 	m_x = 0;
 	m_y = 0;
 }

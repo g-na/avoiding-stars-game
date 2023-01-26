@@ -7,7 +7,7 @@
 
 int main(void)
 {
-	srand(time(NULL));// 함수 안에 넣어버리면 0.3초동안 같은 random값을 받는다.
+	srand(time(NULL));
 		
 	bool state = true;
 	int score = 0;
@@ -31,6 +31,7 @@ int main(void)
 
 		manager.MakeStar();
 		manager.MoveStar();
+		manager.PrintStar();
 		manager.CheckStar();
 		
 		if (manager.CheckCollision(&flight)) { life--; }
@@ -39,6 +40,9 @@ int main(void)
 		score++;
 		Sleep(100);
 	}
+
+	system("cls");
+	manager.GameOver(score);
 
 	return 0;
 }
